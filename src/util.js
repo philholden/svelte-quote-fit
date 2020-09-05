@@ -185,7 +185,7 @@ function orderDrawCalls(
 }
 
 export function processText(text) {
-  const tokens = tokenize(text);
+  const tokens = tokenize(text.replace(/<br>/g, "\n").replace(/<p>/g, "\n\n"));
   const layouts = computeLayouts(tokens, getGap());
   const bounds = layouts.map((layout) => computeMargin(layout));
   return function onResize(canvas) {

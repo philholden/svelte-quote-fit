@@ -34,7 +34,6 @@
       }
     });
     resizeObserver.observe(canvas);
-
     return () => {
       clearTimeout(clear);
       resizeObserver.unobserve(canvas);

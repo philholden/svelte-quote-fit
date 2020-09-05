@@ -23,13 +23,16 @@ function flatten(fragements) {
       if (styles.includes("NOBR")) {
         acc.push([words, styles, ""]);
       } else {
-        const reg = /\S+\s*/gm;
-        const wrd = /\S+/;
+        let i = 0;
+        // this line is contrived to stop regex getting inlined by terser
+        let reg = i === 0 ? /\S+\s*/gm : /(\S|\S+)\s*/gm;
+        //const reg = new RegExp("\\S+\\s*", "gm");
+        let wrd = /\S+/;
         let matches;
 
         // split into word and following space
-        let i = 0;
-        while ((matches = reg.exec(words))) {
+
+        while ((matches = reg.exec(words)) && i < 10000) {
           const word = matches[0].match(wrd)[0];
           let space = /\s+/g.exec(matches[0]);
           if (space === null) {
@@ -77,8 +80,9 @@ export function tokenize(htmlText) {
   return flatten(parse(el));
 }
 
-console.log(
-  "tokens",
-  tokenize("For <b>God so <i>loved</i></b>.\n\n <nobr><i>John 3:16</i></nobr>")
-);
+// console.log(
+//   "tokens",
+//   tokenize("For <b>God so <i>loved</i></b>.\n\n <nobr><i>John 3:16</i></nobr>")
+// );
+
 // could do treewalker or create element
